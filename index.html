@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
   <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="DESCRIPTION META TAG">
-  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
-  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
-  <meta property="og:url" content="URL OF THE WEBSITE"/>
+  <meta name="description" content="DemoDiffusion">
+  <meta property="og:title" content="DemoDiffusion"/>
+  <meta property="og:description" content="Tap here to open the link."/>
+  <meta property="og:url" content="https://demodiffusion-anonymous.github.io/"/>
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image" content="static/image/teaser.png" />
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
 
@@ -24,8 +24,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <title>Academic Project Page</title>
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <title>DemoDiffusion</title>
+  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
   rel="stylesheet">
 
@@ -52,67 +52,12 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">Academic Project Page</h1>
+            <h1 class="title is-1 publication-title"><strong>DemoDiffusion</strong>: One-Shot Human Imitation using pre-trained Diffusion Policy</h1>
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
               <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
-                <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
-                  <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
-                  </span>
-                  </div>
-
-                  <div class="is-size-5 publication-authors">
-                    <span class="author-block">Institution Name<br>Conferance name and year</span>
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
-                  </div>
-
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- Arxiv PDF link -->
-                      <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
-
-                    <!-- Supplementary PDF link -->
-                    <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>
-
-                  <!-- Github link -->
-                  <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-
-                <!-- ArXiv abstract Link -->
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
+                <a href="https://www.corl.org/" target="_blank">CoRL 2025 Anonymous Submission ID 296</a></span>
+                
               </span>
             </div>
           </div>
@@ -124,134 +69,323 @@
 
 
 <!-- Teaser video-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video poster="" id="tree" autoplay controls muted loop height="100%">
+<section class="hero teaser teaser-video ">
+  <div class="container is-max-desktop has-text-centered">
+    <div class="hero-body" >
+      <video poster="" id="teaser" autoplay controls muted loop width="90%">
         <!-- Your video here -->
-        <source src="static/videos/banner_video.mp4"
+        <source src="static/videos/demo.mp4"
+
         type="video/mp4">
       </video>
+    </div> 
+    </div>  
+    </section>
+
+<section class="hero teaser  ">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+
+      <img src="static/images/teaser.jpg" alt="MY ALT TEXT"/>
+        <h2 class="subtitle has-text-centered ">
+        We present <strong>DemoDiffusion</strong>: a simple and scalable method for enabling robots to perform manipulation tasks by imitating a single human demonstration. <strong>DemoDiffusion</strong> refines a re-targeted human demonstration trajectory using a <strong>pre-trained generalist diffusion policy</strong>, efficiently bridging the embodiment gap and enabling the robot to succeed even on tasks where the pre-trained generalist policy fails entirely.
+        </h2>
       <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
       </h2>
+      
     </div>
   </div>
 </section>
 <!-- End teaser video -->
 
 <!-- Paper abstract -->
-<section class="section hero is-light">
+<!-- <section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
+            We propose <strong>DemoDiffusion</strong>, a simple and scalable method for enabling robots to perform manipulation tasks in natural environments by imitating a single human demonstration. Our approach is based on two key insights. First, the hand motion in a human demonstration provides a useful prior for the robot’s end effector trajectory, which we can convert into a rough open-loop robot motion trajectory via kinematic re-targeting. Second, while this re-targeted motion captures the overall structure of the task, it may not align well with plausible robot actions in-context. To address this, we leverage a <strong>pre-trained generalist diffusion policy</strong> to modify the trajectory, ensuring it both follows the human motion and remains within the distribution of plausible robot actions. Our approach avoids the need for online reinforcement learning or paired human-robot data, enabling robust adaptation to new tasks and scenes with minimal manual effort. Experiments in both simulation and real-world settings show that <strong>DemoDiffusion</strong> outperforms both the base policy and the re-targeted trajectory, enabling the robot to succeed even on tasks where the pre-trained generalist policy fails entirely.
           </p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <!-- End paper abstract -->
 
+<section class="hero teaser teaser-video is-light">
+  <div class="container is-max-desktop has-text-centered">
+    <div class="hero-body" >
+      <h2 class="title is-3"> </h2>
+      <h2 class="title is-3">Overview </h2>
+      <video poster="" id="teaser" autoplay controls muted loop width="90%">
+        <!-- Your video here -->
+        <source src="static/videos/demodiffusion_intuition.mp4"
 
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
+        type="video/mp4">
+      </video>
+      
+    </div> 
+    </div>  
+    </section>
+
+
+<!--  carousel -->
+<section class="hero is-small has-text-centered ">
+  <div class="hero-body is-max-desktop ">
     <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
+      <h2 class="title is-3 has-text-centered">Real-world Robot Rollouts </h2>
+      <h2 class="subtitle has-text-centered">Include main results on paper, and results for more objects.</h2>
+      <h2 class="subtitle">
+        <span style="margin-right: 20em; margin-left: 0em;">Human Demo</span> <span style="margin-left: 1em;">Robot Rollout</span>
+      <div id="results-carousel has-text-centered" class="carousel results-carousel">
+        <div class="item">
+          <!-- Your image here -->
+          <video poster="" id="tree" autoplay controls muted loop  width="75%">
+            <!-- Your video here -->
+            <source src="static/videos/laptop_main_final.mp4"
+    
+            type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            "Shut Down the Laptop" 
+          </h2>
+        </div>
+
+        <div class="item">
+          <!-- Your image here -->
+          <video poster="" id="tree" autoplay controls muted loop width="75%">
+            <!-- Your video here -->
+            <source src="static/videos/bear_main_final.mp4"
+    
+            type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            "Pick Up the Teddy Bear" 
+          </h2>
+        </div>
+        <div class="item">
+          <!-- Your image here -->
+          <video poster="" id="tree" autoplay controls muted loop width="75%">
+            <!-- Your video here -->
+            <source src="static/videos/iron_main_final.mp4"
+    
+            type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            "Iron the Curtain on the Table" 
+          </h2>
+        </div>
        <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel1.jpg" alt="MY ALT TEXT"/>
+        <video poster="" id="tree" autoplay controls muted loop  width="75%">
+          <!-- Your video here -->
+          <source src="static/videos/wipe_main_final.mp4"
+  
+          type="video/mp4">
+        </video>
         <h2 class="subtitle has-text-centered">
-          First image description.
+          "Wipe the Table with Tissues" 
         </h2>
       </div>
-      <div class="item">
+  
+
+        <div class="item">
+          <!-- Your image here -->
+          <video poster="" id="tree" autoplay controls muted loop width="75%">
+            <!-- Your video here -->
+            <source src="static/videos/microwave_main_final.mp4"
+    
+            type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            "Close the Microwave"
+          </h2>
+        </div>
+        <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
+        <video poster="" id="tree" autoplay controls muted loop width="75%">
+          <!-- Your video here -->
+          <source src="static/videos/basket_main_final.mp4"
+  
+          type="video/mp4">
+        </video>
         <h2 class="subtitle has-text-centered">
-          Second image description.
+          "Drag the Basket to the Right" 
         </h2>
       </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
+
+        <div class="item">
+          <!-- Your image here -->
+          <video poster="" id="tree" autoplay controls muted loop width="75%">
+            <!-- Your video here -->
+            <source src="static/videos/basket_new_main_final.mp4"
+    
+            type="video/mp4">
+          </video>
+          <h2 class="subtitle has-text-centered">
+            "Drag the Basket to the Right (same human demo, different basket with lower height)" 
+          </h2>
+        </div>
+
+          <div class="item">
+            <!-- Your image here -->
+            <video poster="" id="tree" autoplay controls muted loop width="75%">
+              <!-- Your video here -->
+              <source src="static/videos/wipe_new_main_final.mp4"
+      
+              type="video/mp4">
+            </video>
+            <h2 class="subtitle has-text-centered">
+              "Wipe the Table with Tissues (same human demo, different cloth)" 
+            </h2>
+          </div>
+      </div>
+
+
+    </h2>
+
     </div>
   </div>
+
+  
+</div>
+</div>
+</section>
+
+<!--  carousel -->
+<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Qualitative Comparison to Baselines</h2>
+      <h2 class="subtitle" > <span style="margin-right: 16em; margin-left: 6em">Kinematic Retargeting</span>
+        <span style="margin-right: 5em;">Pi-0</span>
+        <span style="margin-left: 12em"><strong>DemoDiffusion</strong>
+        </span>
+      <div id="results-carousel has-text-centered" class="carousel results-carousel">
+      <div class="item">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop height="90%">
+          <!-- Your video here -->
+          <source src="static/videos/laptop_qual_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          "Shut Down the Laptop"
+        </h2>
+      </div>
+
+
+      <div class="item">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop height="90%">
+          <!-- Your video here -->
+          <source src="static/videos/bear_qual_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          "Pick Up the Teddy Bear"
+        </h2>
+      </div>
+  
+      <div class="item">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop height="90%">
+          <!-- Your video here -->
+          <source src="static/videos/iron_qual_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          "Iron the Curtain on the Table"
+        </h2>
+      </div>
+
+      <div class="item">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop height="90%">
+          <!-- Your video here -->
+          <source src="static/videos/wipe_qual_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered" >
+          "Wipe the Table with Tissues"
+        </h2>
+      </div>
+  
+
+       <div class="item">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop height="90%">
+          <!-- Your video here -->
+          <source src="static/videos/microwave_qual_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          "Close the Microwave"
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop height="90%">
+          <!-- Your video here -->
+          <source src="static/videos/basket_qual_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          "Drag the Basket to the Right"
+        </h2>
+      </div>
+    </div>
+  </h2>
+
 </div>
 </div>
 </section>
 <!-- End image carousel -->
 
 
+<section class="hero is-small ">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3 has-text-centered">Detailed Results for Hand Reconstruction and Robot Execution</h2>
+      <h2 class="subtitle">Left 4 videos show the extracted human hand 3D keypoints. The right 2 videos show the observations from robot wrist camera (right-top), and observations from rear view camera (right-bottom).</h2>
+      
+       <div class="item">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop height="100%">
+          <!-- Your video here -->
+          <source src="static/videos/basket_detail_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          "Drag the Basket to the Right"
+        </h2>
+      
+      
+      
+     
+    
+  </div>
+</div>
+</div>
+</section>
+
 
 
 <!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- Youtube embed code here -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <!-- End youtube video -->
 
 
 <!-- Video carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <!-- End video carousel -->
 
 
@@ -260,7 +394,7 @@
 
 
 <!-- Paper poster -->
-<section class="hero is-small is-light">
+<!-- <section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
       <h2 class="title">Poster</h2>
@@ -270,17 +404,17 @@
         
       </div>
     </div>
-  </section>
+  </section> -->
 <!--End paper poster -->
 
 
 <!--BibTex citation -->
-  <section class="section" id="BibTeX">
+  <!-- <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>BibTex Code Here</code></pre>
+      <pre><code>Coming Soon!</code></pre>
     </div>
-</section>
+</section> -->
 <!--End BibTex citation -->
 
 
