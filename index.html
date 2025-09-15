@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+      content="We present DemoDiffusion: a simple and scalable method for enabling robots to perform manipulation tasks 
+      by imitating a single human demonstration, without requiring paired human-robot data. DemoDiffusion refines a re-targeted human demonstration trajectory using 
+      a pre-trained generalist diffusion policy, efficiently bridging the embodiment gap  and enabling the robot to succeed 
+      even on tasks where the pre-trained generalist policy fails entirely..">
+  
+  <meta name="keywords" content="Imitation Learning, Robot Learning, Human Data"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DemoDiffusion</title>
+
+
+  <!-- For Google Analytical. It's optional! -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id="></script> -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', ''); // Optional: Fill id to ''.
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/custom.css">
+  <link rel="icon" href="./static/images/favicon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="static/js/full_screen_video.js"></script>
+  <script src="static/js/auto_resize_first_page_text.js"></script>
+  <script src="static/js/open_in_new_tab.js"></script>
+</head>
+<body>
+
+
+  
+<nav class="navbar" role="navigation" aria-label="main navigation">
+</nav>
+<!-- Paper Info Section -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <!-- Title -->
+          <h1 class="title is-1 publication-title">
+            <span style="color:#f16a6a">DemoDiffusion</span>: One-Shot Human Imitation 
+
+            <span>using pre-trained Diffusion Policy</span>
+          
+          </h1>
+
+          <!-- Conference -->
+          <!-- <h2 class="title is-4">
+            <a href="https://corl2025.org" class="conference"><span style="color:#ff9d0b"> 
+              Conference on Robot Learning (<span class="grad_text">CoRL</span>) 2025</span>
+            </a>
+          </h2> -->
+
+          <!-- Authors -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block" style="margin-right: 1rem;"><a href="https://www.corl.org/" style="color: #2980b9 !important;">ICRA 2026 Anonymous Submission</a></span>
+            </div>
+          <!-- <div class="is-size-5 publication-authors">
+          </div> -->
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TODO: Teaser -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body is-centered">
+      <video poster="" id="teaser" autoplay controls muted loop width="100%">
+        <!-- Your video here -->
+        <source src="static/videos/main/teaser.mp4"
+
+        type="video/mp4">
+      </video>
+      <!-- <img src="static/images/teaser.jpg" alt="MY ALT TEXT"/> -->
+      <h2 class="subtitle has-text-centered">
+        <!-- We present <strong>DemoDiffusion</strong>: a simple and scalable method for enabling robots to perform manipulation tasks by imitating a single human demonstration. <strong>DemoDiffusion</strong> refines a re-targeted human demonstration trajectory using a <strong>pre-trained generalist diffusion policy</strong>, efficiently bridging the embodiment gap and enabling the robot to succeed even on tasks where the pre-trained generalist policy fails entirely. -->
+        We present <strong>DemoDiffusion</strong>: a simple and scalable method for enabling robots to perform manipulation tasks by imitating a single human demonstration, <strong>without</strong> requiring any paired human-robot data. <strong>DemoDiffusion</strong> refines a re-targeted human demonstration trajectory using a <strong>pre-trained generalist diffusion policy</strong>, efficiently bridging the embodiment gap and enabling the robot to succeed even on tasks where the pre-trained generalist policy fails entirely.
+      </h2>      
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Overview. -->
+<section class="section">  
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Overview</h2>
+        <div class="is-vcentered">
+          <video poster="" id="teaser" autoplay controls muted loop width="100%">
+            <!-- Your video here -->
+            <source src="static/videos/demodiffusion_intuition.mp4"
+    
+            type="video/mp4">
+          </video>
+
+        </div>
+        <!-- <div class="content has-text-justified">
+          <p>
+            <strong>EgoZero</strong> trains policies in a unified state-action space defined as egocentric 3D points. Unlike previous methods which leverage multi-camera calibration and depth sensors, EgoZero localizes object points via triangulation over the camera trajectory, and computes action points via Aria MPS hand pose and a hand estimation model. These points supervise a closed-loop Transformer policy, which is rolled out on unprojected points from an iPhone during inference.
+          </p>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Overview. -->
+<!-- Method -->
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Method</h2>
+    Tactile Data Collection
+    <div class="content">
+      <h3 class="title is-4">1. Tactile Data Collection</h3>
+      <img src="./static/images/glove_setup.png" alt="Tactile Data Collection">
+      <p>
+        We design a custom, low-cost tactile glove inspired by AnySkin to capture 3D contact forces during natural human manipulation.
+        The glove streams high-frequency force data, synchronized with stereo camera views capturing hand and object interactions.
+        A tactile sensor is mounted on the robot's gripper to replicate the force sensing.
+      </p>
+      <details>
+        <summary>More details</summary>
+        <p>
+          The tactile glove places magnetometer-based sensors on the underside of the thumb to minimize occlusion.
+          The sensor data is sampled at 200Hz and downsampled to align with 30Hz visual frames. The resulting force readings are used to supervise a policy trained entirely on human demonstrations, without requiring robot data.
+        </p>
+      </details>
+    </div>
+
+</section> -->
+<!--/ Method -->
+
+
+<!-- Experiments -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Experiments</h2>
+
+    <!-- DemoDiffusion Performance with Toggle Videos -->
+    <div class="content">
+      <h3 class="title is-4">1. Task Rollouts <span style="color: rgb(154, 153, 153); font-size: 0.8em; margin-left: 8px;">(x2 speed for robot)</span> </h3>
+      <div class="tabs is-centered is-boxed has-text-centered" id="demodiffusion-video-tabs">
+        <ul>
+          <li class="is-active" data-target="video-bowl"><a>Pick Place <br> Bowl</a></li>
+          <li data-target="video-laptop"><a>Close<br>Laptop</a></li>
+          <li data-target="video-microwave"><a>Close <br> Microwave</a></li>
+          <li data-target="video-iron"><a>Iron <br> Curtain </a></li>
+          <li data-target="video-wipe"><a>Wipe <br> Table </a></li>
+          <li data-target="video-banana"><a>Pick Place <br> Banana</a></li>
+          <li data-target="video-bear"><a>Pick-up <br> Bear</a></li>
+          <li data-target="video-basket"><a>Drag <br> Basket</a></li>
+        </ul>
+      </div>
+
+      <div id="demodiffusion-video-display">
+          <div class="video-content is-active" id="video-bowl">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/bowl.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bowl_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-bear">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/bear.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bear_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="video-content" id="video-laptop">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/laptop.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/laptop_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-banana">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/banana.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/banana_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="video-content" id="video-iron">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/iron.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/iron_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="video-content" id="video-wipe">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/wiping.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/wiping_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="video-content" id="video-microwave">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/microwave.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/microwave_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-basket">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Human Demonstration</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/demo/basket.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/basket_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+          </div>
+
+      </div>
+    </div>
+
+
+
+    <div class="content">
+      <h3 class="title is-4">2. Comparison to Baselines <span style="color: rgb(154, 153, 153); font-size: 0.8em; margin-left: 8px;">(x2 speed for robot)</span></h3>
+      <div class="tabs is-centered is-boxed has-text-centered" id="demodiffusion-video-tabs">
+        <ul>
+          <li class="is-active" data-target="video-bowl"><a>Pick Place <br> Bowl</a></li>
+          <li data-target="video-laptop"><a>Close<br>Laptop</a></li>
+          <li data-target="video-microwave"><a>Close <br> Microwave</a></li>
+          <li data-target="video-iron"><a>Iron <br> Curtain </a></li>
+          <li data-target="video-wipe"><a>Wipe <br> Table </a></li>
+          <li data-target="video-banana"><a>Pick Place <br> Banana</a></li>
+          <li data-target="video-bear"><a>Pick-up <br> Bear</a></li>
+          <li data-target="video-basket"><a>Drag <br> Basket</a></li>
+        </ul>
+      </div>
+      <div id="demodiffusion-video-display">
+          <div class="video-content is-active" id="video-bowl">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bowl_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bowl_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bowl_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/pickplace_bowl.html" class="button is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Pick Place Bowl Evaluation Videos</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="video-content" id="video-laptop">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/laptop_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/laptop_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/laptop_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/shut_laptop.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Close Laptop Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-laptop">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/laptop_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/laptop_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/laptop_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/shut_laptop.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Close Laptop Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-microwave">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/microwave_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/microwave_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/microwave_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/close_microwave.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Close Microwave Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-iron">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/iron_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/iron_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/iron_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/iron_curtain.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Iron Curtain Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-wipe">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/wiping_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/wiping_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/wiping_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/wipe_table.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Wipe Table Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-banana">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/banana_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/banana_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/banana_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/pickplace_banana.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Pick Place Banana Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-bear">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bear_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bear_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/bear_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/pickup_bear.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Pick-up Bear Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+
+          <div class="video-content" id="video-basket">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/basket_qual_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/basket_qual_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/main/basket_qual_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+
+            <div class="has-text-centered mt-4">
+              <a href="static/videos/pages/drag_basket.html" class="button  is-small">
+                <span class="icon">
+                  <i class="fas fa-video"></i>
+                </span>
+                <span>View All Drag Basket Evaluation Videos</span>
+              </a>
+            </div>
+
+
+          </div>
+      </div>
+    </div>
+
+
+
+    <br>
+    <div class="content">
+      <h3 class="title is-4">3. Zero-Shot Generalization to New Objects <span style="color: rgb(154, 153, 153); font-size: 0.8em; margin-left: 8px;">(x2 speed for robot)</span> </h3>
+      <div class="tabs is-centered is-boxed has-text-centered" id="demodiffusion-video-tabs">
+        <ul>
+          <li class="is-active" data-target="video-bowl"><a>Pick Place <br> Bowl</a></li>
+          <li data-target="video-wipe"><a>Wipe <br> Table </a></li>
+          <li data-target="video-basket"><a>Drag <br> Basket</a></li>
+        </ul>
+      </div>
+
+
+      <div id="demodiffusion-video-display">
+        <div class="video-content is-active" id="video-bowl">
+          <div class="columns">
+            <div class="column">
+              <h4 class="title is-5 has-text-centered">Pi-0</h4>
+              <video  controls autoplay muted loop playsinline width="100%">
+                <source src="./static/videos/generalization/bowl_generalization_pi_2x.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="column">
+              <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+              <video  controls autoplay muted loop playsinline width="100%">
+                <source src="./static/videos/generalization/bowl_generalization_kinematic_2x.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="column">
+              <h4 class="title is-5 has-text-centered">
+                <span style="color:#f16a6a">DemoDiffusion</span>
+              </h4>
+
+              <video  controls autoplay muted loop playsinline width="100%">
+                <source src="./static/videos/generalization/bowl_generalization_ours_0.4_2x.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+          <div class="video-content" id="video-wipe">
+            <div class="columns">
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/generalization/wiping_generalization_pi_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/generalization/wiping_generalization_kinematic_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+              
+              <div class="column">
+                <h4 class="title is-5 has-text-centered">
+                  <span style="color:#f16a6a">DemoDiffusion</span>
+                </h4>
+  
+                <video  controls autoplay muted loop playsinline width="100%">
+                  <source src="./static/videos/generalization/wiping_generalization_ours_2x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+
+            <div class="video-content" id="video-basket">
+              <div class="columns">
+                <div class="column">
+                  <h4 class="title is-5 has-text-centered">Pi-0</h4>
+                  <video  controls autoplay muted loop playsinline width="100%">
+                    <source src="./static/videos/generalization/basket_generalization_pi_2x.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <div class="column">
+                  <h4 class="title is-5 has-text-centered">Kinematic Retargeting</h4>
+                  <video  controls autoplay muted loop playsinline width="100%">
+                    <source src="./static/videos/generalization/basket_generalization_kinematic_2x.mp4" type="video/mp4">
+                  </video>
+                </div>
+                
+                <div class="column">
+                  <h4 class="title is-5 has-text-centered">
+                    <span style="color:#f16a6a">DemoDiffusion</span>
+                  </h4>
+    
+                  <video  controls autoplay muted loop playsinline width="100%">
+                    <source src="./static/videos/generalization/basket_generalizaiton_ours_2x.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+  
+
+
+      </div>
+    </div>
+
+
+    <br>
+
+
+
+
+
+    <br>
+    <div class="content">
+      <h3 class="title is-4">4. Detailed Results for Hand Reconstruction and Robot Execution</h3>
+      <div class="item has-text-centered">
+        <!-- Your image here -->
+        <video poster="" id="tree" autoplay controls muted loop width="75%">
+          <!-- Your video here -->
+          <source src="static/videos/main/basket_detail_final.mp4"
+  
+          type="video/mp4">
+        </video>
+        <h5 class="subtitle has-text-centered">Task: Drag the Basket to the Right</h5>
+
+    </div>
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            <!-- You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>. -->
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
